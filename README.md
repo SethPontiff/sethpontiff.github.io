@@ -12,7 +12,7 @@
 <!-- Replace with your project image path -->
 
 **About**  
-A \ demonstration project focused on Year 2 game development concepts, with an emphasis on networked gameplay.
+A demonstration project focused on Year 2 game development concepts, with an emphasis on networked gameplay.
 
 **Features**
 - Network synchronization using RPC calls for multiplayer events
@@ -312,7 +312,7 @@ A professional character customization tool developed for VRChat integration, fe
 <details>
 <summary>Videos & GIFs</summary>
 
-![Editor Interface](assets/astra/ACE_Demo_Short.mp4)
+![Editor Interface](assets/astra/ACE_Demo_Short.gif)
 <!-- Add demo videos of the editor here -->
 
 </details>
