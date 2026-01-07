@@ -24,7 +24,7 @@ A comprehensive demonstration project focused on Year 2 game development concept
 <details>
 <summary>Videos & GIFs</summary>
 
-![Gameplay Demo](assets/y2prephns/demo.gif)
+![Gameplay Demo](assets/y2prephns/y2p_demo.gif)
 <!-- Add your gameplay videos/GIFs here -->
 
 </details>
@@ -33,15 +33,10 @@ A comprehensive demonstration project focused on Year 2 game development concept
 <details>
 <summary>View Examples</summary>
 
-**C++ Implementation:**
-```cpp
-// Add your C++ code snippets here
-// Example: RPC implementation, Data Asset usage, etc.
-```
-
 **Blueprint Systems:**  
-![Network RPC Blueprint](assets/y2prephns/blueprint_rpc.png)  
-![Team Selection Blueprint](assets/y2prephns/blueprint_team.png)  
+![Data Asset Example](assets/y2prephns/y2p_dataasset_example.png)  
+![Attack Example](assets/y2prephns/y2p_character_attack.png)  
+![Server Spawn Example](assets/y2prephns/y2p_serverspawn_example.png)  
 <!-- Add your UE5.4 Blueprint screenshots here -->
 
 </details>
@@ -66,8 +61,7 @@ Educational visualization tool demonstrating mathematical concepts and their imp
 <details>
 <summary>Videos & GIFs</summary>
 
-![Tank Movement Demo](assets/ue5-math/tank_demo.gif)
-![Turret System Demo](assets/ue5-math/turret_demo.gif)
+![Demo](assets/ue5-math/demo.gif)
 <!-- Add your demo videos/GIFs here -->
 
 </details>
@@ -76,14 +70,9 @@ Educational visualization tool demonstrating mathematical concepts and their imp
 <details>
 <summary>View Examples</summary>
 
-**C++ Implementation:**
-```cpp
-// Add your math and movement code snippets here
-```
-
 **Blueprint Systems:**  
-![Movement Blueprint](assets/ue5-math/blueprint_movement.png)  
-![Turret AI Blueprint](assets/ue5-math/blueprint_turret.png)  
+![Tank Blueprint](assets/ue5-math/tank_bp.png)  
+![Turret AI Blueprint](assets/ue5-math/turret_bp.png)  
 
 </details>
 
@@ -92,7 +81,6 @@ Educational visualization tool demonstrating mathematical concepts and their imp
 ---
 
 ### OpenGLTesting
-![OpenGL Banner](assets/opengl/banner.png)
 
 **About**  
 A graphics programming project exploring modern OpenGL implementation, focusing on rendering fundamentals and shader programming.
@@ -103,11 +91,11 @@ A graphics programming project exploring modern OpenGL implementation, focusing 
 - Image loading and overlay system
 - Planned expansion to 3D rendering
 
-**Media**  
+**Resources**  
 <details>
-<summary>Videos & GIFs</summary>
+<summary>Screenshots</summary>
 
-![Rendering Output](assets/opengl/render_demo.gif)
+![Rendering Output](assets/opengl/image_demo)
 <!-- Add your OpenGL output demos here -->
 
 </details>
@@ -118,12 +106,59 @@ A graphics programming project exploring modern OpenGL implementation, focusing 
 
 **C++ Implementation:**
 ```cpp
-// Add your OpenGL and shader code snippets here
-```
+#include "shaderClass.h"
 
-**Shader Code:**
-```glsl
-// Add your GLSL shader examples here
+std::string get_file_contents(const char* filename)
+{
+	std::ifstream in(filename, std::ios::binary);
+	if (in)
+	{
+		std::string contents;
+		in.seekg(0, std::ios::end);
+		contents.resize(in.tellg());
+		in.seekg(0, std::ios::beg);
+		in.read(&contents[0], contents.size());
+		in.close();
+		return(contents);
+	}
+	throw(errno);
+}
+
+Shader::Shader(const char* vertexFile, const char* fragmentFile)
+{
+	std::string vertexCode = get_file_contents(vertexFile);
+	std::string fragmentCode = get_file_contents(fragmentFile);
+
+	const char* vertexSource = vertexCode.c_str();
+	const char* fragmentSource = fragmentCode.c_str();
+
+	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vertexSource, NULL);
+	glCompileShader(vertexShader);
+
+	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+	glCompileShader(fragmentShader);
+
+	ID = glCreateProgram();
+
+	glAttachShader(ID, vertexShader);
+	glAttachShader(ID, fragmentShader);
+	glLinkProgram(ID);
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+}
+
+void Shader::Activate()
+{
+	glUseProgram(ID);
+}
+
+void Shader::Delete()
+{
+	glDeleteProgram(ID);
+}
 ```
 
 </details>
@@ -132,8 +167,7 @@ A graphics programming project exploring modern OpenGL implementation, focusing 
 
 ---
 
-### RPG Client & Server
-![RPG System Banner](assets/rpg/banner.png)
+### Console Commanders
 
 **About**  
 A networked turn-based RPG system built with WebSocket technology, featuring client-server architecture for local multiplayer gameplay.
@@ -147,21 +181,85 @@ A networked turn-based RPG system built with WebSocket technology, featuring cli
 
 **Media**  
 <details>
-<summary>Videos & GIFs</summary>
+<summary>Images</summary>
 
-![Combat System Demo](assets/rpg/combat_demo.gif)
-![Character Selection Demo](assets/rpg/character_demo.gif)
+![Server Screenshot](assets/rpg/server_example.png)
+![Client Screenshot](assets/rpg/client_example.png)
 <!-- Add your gameplay videos here -->
 
 </details>
 
-**Code & Blueprints**  
+**Code**  
 <details>
 <summary>View Examples</summary>
 
 **C++ Implementation:**
 ```cpp
-// Add your networking and game logic code here
+// RPG_Server_combat.cpp
+// Implementation of combat system (SERVER)
+
+#include "RPG_Server_combat.h"
+#include "RPG_Server_globals.h"
+#include "RPG_Server_network.h"
+#include "RPG_Server_utils.h"
+#include "RPG_Server_enemy.h"
+#include <algorithm>
+
+using namespace std;
+
+int calculateDamage(Player& player, bool isCrit) {
+    int baseDmg = player.baseAttack + player.weapon.damage;
+    int variance = rollDice(-3, 3);
+    int damage = baseDmg + variance;
+
+    if (isCrit) {
+        damage = static_cast<int>(damage * 2.0);
+    }
+
+    return max(1, damage);
+}
+
+void playerAttack(Player& player) {
+    bool isCrit = (rollDice(1, 100) <= 15);
+    int damage = calculateDamage(player, isCrit);
+
+    dragon.hp -= damage;
+
+    string msg = player.name + " attacks for " + to_string(damage) + " damage!";
+    if (isCrit) msg += " [CRITICAL HIT!]";
+
+    addToLog(msg);
+    broadcastMessage("SERVER:" + msg + "\n");
+}
+
+void advanceTurn() {
+    totalPlayerTurns++;
+    currentTurn = (currentTurn + 1) % players.size();
+
+    while (currentTurn < players.size() && !players[currentTurn].isAlive) {
+        currentTurn = (currentTurn + 1) % players.size();
+    }
+
+    if (totalPlayerTurns >= players.size()) {
+        totalPlayerTurns = 0;
+        enemyTurn = true;
+        broadcastMessage("TURN:Enemy's turn!\n");
+        enemyAttackPhase();
+        displayGameState();
+        broadcastGameState();
+        enemyTurn = false;
+        currentTurn = 0;
+
+        while (currentTurn < players.size() && !players[currentTurn].isAlive) {
+            currentTurn = (currentTurn + 1) % players.size();
+        }
+    }
+
+    string turnMsg = "TURN:" + players[currentTurn].name + "'s turn!\n";
+    broadcastMessage(turnMsg);
+    broadcastGameState();
+    displayGameState();
+}
 ```
 
 </details>
@@ -173,7 +271,6 @@ A networked turn-based RPG system built with WebSocket technology, featuring cli
 ---
 
 ### 900lbsTechnical
-![AR Demo Banner](assets/900lbs/banner.png)
 
 **About**  
 A technical demonstration project showcasing augmented reality capabilities and mobile development skills for a Texas-based company.
@@ -193,26 +290,14 @@ A technical demonstration project showcasing augmented reality capabilities and 
 
 </details>
 
-**Code & Blueprints**  
-<details>
-<summary>View Examples</summary>
+**Code Available per Request**  
 
-**C++ Implementation:**
-```cpp
-// Add your AR and mobile code snippets here
-```
-
-**Blueprint Systems:**  
-![AR System Blueprint](assets/900lbs/blueprint_ar.png)  
-
-</details>
 
 🔗 [View Repository](https://github.com/SethPontiff/900lbsTechnical)
 
 ---
 
 ### Astra Customizable Editor
-![Astra Editor Banner](assets/astra/banner.png)
 
 **About**  
 A professional character customization tool developed for VRChat integration, featuring advanced model manipulation powered by a proprietary SDK.
@@ -232,22 +317,34 @@ A professional character customization tool developed for VRChat integration, fe
 
 </details>
 
-**Code & Blueprints**  
+> **Note:** Full source code is proprietary. Limited snippets and screenshots available per request.
+
+
+🔗 *Repository available by request*
+
+---
+
+### Exxon Electrical Safety
+
+**About**  
+A VR-focused virtual training to teach Exxon employees electrical safety when handling equipment.
+
+**Features**
+- Full VR functionality with mockups of real-world tools and a scanned environment,
+- Fully guided training that walks through multiple tools and objectives.
+
+**Media**  
 <details>
-<summary>View Examples</summary>
+<summary>Screenshots</summary>
 
-> **Note:** Full source code is proprietary. Limited snippets and screenshots available.
-
-![Editor Interface Screenshot](assets/astra/interface_screenshot.png)  
-![Customization System Screenshot](assets/astra/customization_screenshot.png)  
-
-**Code Snippet Example:**
-```cpp
-// Limited code examples available upon request
-// (Non-proprietary sections only)
-```
+![Lockout](assets/exxon/exxon_example_image.png)
+![Ground Clusters](assets/exxon/exxon_example_image2.png)
+<!-- Add demo videos of the editor here -->
 
 </details>
+
+> **Note:** Full source code is proprietary. Limited snippets and screenshots available per request.
+
 
 🔗 *Repository available by request*
 
