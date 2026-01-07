@@ -8,7 +8,7 @@
 ## Projects
 
 ### Y2PrepHNS
-![Y2PrepHNS Banner](assets/y2prephns/banner.png)
+![Y2PrepHNS Banner](assets/y2prephns/banner.PNG)
 <!-- Replace with your project image path -->
 
 **About**  
