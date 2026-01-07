@@ -95,7 +95,7 @@ A graphics programming project exploring modern OpenGL implementation, focusing 
 <details>
 <summary>Screenshots</summary>
 
-![Rendering Output](assets/opengl/image_demo)
+![Rendering Output](assets/opengl/image_demo.png)
 <!-- Add your OpenGL output demos here -->
 
 </details>
