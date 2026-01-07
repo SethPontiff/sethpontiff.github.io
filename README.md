@@ -12,7 +12,7 @@
 <!-- Replace with your project image path -->
 
 **About**  
-A comprehensive demonstration project focused on Year 2 game development concepts, with emphasis on networked gameplay and RPG systems.
+A \ demonstration project focused on Year 2 game development concepts, with an emphasis on networked gameplay.
 
 **Features**
 - Network synchronization using RPC calls for multiplayer events
@@ -49,7 +49,7 @@ A comprehensive demonstration project focused on Year 2 game development concept
 ![Math Prototyping Banner](assets/ue5-math/banner.png)
 
 **About**  
-Educational visualization tool demonstrating mathematical concepts and their implementation in Unreal Engine 5, designed for teaching game development fundamentals.
+A UE5 implementation demonstrating mathematical concepts and their usage in Unreal Engine 5, designed for helping teach game development fundamentals.
 
 **Features**
 - Tank movement system with physics-based collision detection
