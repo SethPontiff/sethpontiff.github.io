@@ -312,7 +312,7 @@ A professional character customization tool developed for VRChat integration, fe
 <details>
 <summary>Videos & GIFs</summary>
 
-![Editor Interface](assets/astra/editor_demo.gif)
+![Editor Interface](assets/astra/ACE_Demo_Short.mp4)
 <!-- Add demo videos of the editor here -->
 
 </details>
