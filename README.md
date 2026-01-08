@@ -7,8 +7,8 @@
 
 ## Projects
 
-### Y2PrepHNS
-![Y2PrepHNS Banner](assets/y2prephns/banner.PNG)
+### Unreal Engine - Multiplayer Networking RPG
+![Multiplayer Networking RPG](assets/y2prephns/banner.PNG)
 <!-- Replace with your project image path -->
 
 **About**  
@@ -45,8 +45,8 @@ A demonstration project focused on Year 2 game development concepts, with an emp
 
 ---
 
-### UE5-Math-Prototyping
-![Math Prototyping Banner](assets/ue5-math/banner.png)
+### Unreal Engine - Tank Combat and Physics
+![Tank Combat and Physics Banner](assets/ue5-math/banner.png)
 
 **About**  
 A UE5 implementation demonstrating mathematical concepts and their usage in Unreal Engine 5, designed for helping teach game development fundamentals.
@@ -80,7 +80,7 @@ A UE5 implementation demonstrating mathematical concepts and their usage in Unre
 
 ---
 
-### OpenGLTesting
+### OpenGL - Textured Triangle Shader
 
 **About**  
 A graphics programming project exploring modern OpenGL implementation, focusing on rendering fundamentals and shader programming.
@@ -89,7 +89,6 @@ A graphics programming project exploring modern OpenGL implementation, focusing 
 - Triangle-based geometry rendering with texture mapping
 - Custom shader implementation for visual effects
 - Image loading and overlay system
-- Planned expansion to 3D rendering
 
 **Resources**  
 <details>
@@ -270,10 +269,10 @@ void advanceTurn() {
 
 ---
 
-### 900lbsTechnical
+### AR Demo
 
 **About**  
-A technical demonstration project showcasing augmented reality capabilities and mobile development skills for a Texas-based company.
+A technical demonstration project showcasing augmented reality capabilities and mobile development skills.
 
 **Features**
 - AR object manipulation in real-world environments
@@ -293,7 +292,7 @@ A technical demonstration project showcasing augmented reality capabilities and 
 **Code Available per Request**  
 
 
-🔗 [View Repository](https://github.com/SethPontiff/900lbsTechnical)
+🔗 [View Repository](https://github.com/SethPontiff/AR-Demo)
 
 ---
 
